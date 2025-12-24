@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K Legal Tax - PDF Tools</title>
+    <link rel="icon" type="image/png" href="K Legal Tax.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="K Legal Tax.png" alt="K Legal Tax">
+            <span>K Legal Tax</span>
+        </div>
+        <nav class="sidebar-nav">
+            <!-- Add navigation buttons here as needed -->
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="container">
+            <header>
+                <h1>PDF Combiner</h1>
+                <p class="subtitle">Merge, reorder & download your PDFs</p>
+            </header>
+
+            <div class="upload-zone" id="uploadZone">
+                <input type="file" id="fileInput" accept=".pdf" multiple hidden>
+                <div class="upload-content">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                    </div>
+                    <p class="upload-text">Drop PDFs here or <span>browse</span></p>
+                    <p class="upload-hint">Select multiple files to combine</p>
+                </div>
+            </div>
+
+            <div class="pdf-list" id="pdfList"></div>
+
+            <div class="actions" id="actions" style="display: none;">
+                <div class="filename-wrapper">
+                    <label for="filename">Give Your Combined Document a Name:</label>
+                    <div class="filename-input">
+                        <input type="text" id="filename" placeholder="combined-document" value="combined-document">
+                        <span class="extension">.pdf</span>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        Clear All
+                    </button>
+                    <button class="btn btn-primary" id="combineBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Combine & Download
+                    </button>
+                </div>
+            </div>
+
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="spinner"></div>
+                <p>Combining PDFs...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,582 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #fafafa;
+    --bg-secondary: #f5f5f5;
+    --bg-card: #ffffff;
+    --bg-hover: #f0f0f0;
+    --accent: #333;
+    --accent-hover: #555;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --border: #e5e7eb;
+    --danger: #ef4444;
+    --danger-hover: #f87171;
+    --success: #22c55e;
+    --radius: 12px;
+    --radius-lg: 16px;
+    --sidebar-width: 260px;
+}
+
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.sidebar-logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.sidebar-logo span {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-nav a,
+.sidebar-nav button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav button:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.sidebar-nav a.active,
+.sidebar-nav button.active {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--accent);
+}
+
+.sidebar-nav svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    background: var(--bg-primary);
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 32px;
+    position: relative;
+}
+
+header {
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+.upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-lg);
+    padding: 60px 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--bg-card);
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-zone::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+    border-color: var(--accent);
+    background: var(--bg-hover);
+}
+
+.upload-zone:hover::before,
+.upload-zone.dragover::before {
+    opacity: 1;
+}
+
+.upload-content {
+    position: relative;
+    z-index: 1;
+}
+
+.upload-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.upload-icon svg {
+    width: 28px;
+    height: 28px;
+    color: white;
+}
+
+.upload-text {
+    font-size: 18px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.upload-text span {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.upload-hint {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.pdf-list {
+    display: grid;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.pdf-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: grab;
+    transition: all 0.2s ease;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pdf-item:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.pdf-item.dragging {
+    opacity: 0.5;
+    transform: scale(1.02);
+    box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.pdf-item.drag-over {
+    border-color: var(--accent);
+    background: var(--bg-hover);
+}
+
+.drag-handle {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 4px;
+    cursor: grab;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.drag-handle:hover {
+    opacity: 1;
+}
+
+.drag-handle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--text-secondary);
+    border-radius: 1px;
+}
+
+.pdf-preview {
+    width: 80px;
+    height: 100px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+}
+
+.pdf-preview canvas {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.pdf-preview-placeholder {
+    color: var(--text-muted);
+    font-size: 12px;
+    text-align: center;
+}
+
+.pdf-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pdf-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pdf-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.pdf-order {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-right: 8px;
+}
+
+.pdf-remove {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.pdf-remove svg {
+    width: 18px;
+    height: 18px;
+    color: var(--danger);
+}
+
+.pdf-remove:hover {
+    background: var(--danger);
+}
+
+.pdf-remove:hover svg {
+    color: white;
+}
+
+.actions {
+    margin-top: 40px;
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    animation: slideIn 0.3s ease;
+}
+
+.filename-wrapper {
+    margin-bottom: 20px;
+}
+
+.filename-wrapper label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.filename-input {
+    display: flex;
+    align-items: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.filename-input:focus-within {
+    border-color: var(--accent);
+}
+
+.filename-input input {
+    flex: 1;
+    padding: 12px 16px;
+    font-size: 15px;
+    font-family: 'JetBrains Mono', monospace;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    outline: none;
+}
+
+.filename-input input::placeholder {
+    color: var(--text-muted);
+}
+
+.filename-input .extension {
+    padding: 12px 16px;
+    background: var(--bg-hover);
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    border-left: 1px solid var(--border);
+}
+
+.buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    background: var(--accent-hover);
+   
+}
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    color: red;
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-hover);
+    color: red;
+    border-color: var(--text-muted);
+}
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 100;
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-overlay p {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 70px;
+    }
+
+    .sidebar-logo span {
+        display: none;
+    }
+
+    .sidebar-logo {
+        justify-content: center;
+        padding: 20px 12px;
+    }
+
+    .sidebar-nav a span,
+    .sidebar-nav button span {
+        display: none;
+    }
+
+    .sidebar-nav a,
+    .sidebar-nav button {
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .main-content {
+        margin-left: 70px;
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .container {
+        padding: 24px 16px;
+    }
+
+    header h1 {
+        font-size: 24px;
+    }
+
+    .upload-zone {
+        padding: 40px 24px;
+    }
+
+    .pdf-item {
+        padding: 12px;
+    }
+
+    .pdf-preview {
+        width: 60px;
+        height: 75px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+}
