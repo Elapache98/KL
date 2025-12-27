@@ -8,13 +8,28 @@ const SESSION_KEY = 'klegal_session';
 
 // SHA-256 hash function using Web Crypto API
 async function hashPassword(password) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
+    try {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+    } catch (err) {
+        console.error('Hashing error:', err);
+        return null;
+    }
 }
+
+// Helper: Generate hash for a new password (use in browser console)
+// Usage: newHash("YourNewPassword")
+window.newHash = async (password) => {
+    const hash = await hashPassword(password);
+    console.log('\n📋 Your new password hash:\n');
+    console.log(hash);
+    console.log('\n👆 Copy this and paste it into config.js as PASSWORD_HASH\n');
+    return hash;
+};
 
 function checkSession() {
     // In dev mode, always show password gate
@@ -81,7 +96,18 @@ function initPasswordGate() {
         e.preventDefault();
         
         const enteredPassword = passwordInput.value;
+        
+        if (!enteredPassword) {
+            passwordError.textContent = 'Please enter a password.';
+            return;
+        }
+        
         const enteredHash = await hashPassword(enteredPassword);
+        
+        if (!enteredHash) {
+            passwordError.textContent = 'Error processing password. Please try again.';
+            return;
+        }
         
         if (enteredHash === PASSWORD_HASH) {
             createSession();
