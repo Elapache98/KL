@@ -4,6 +4,118 @@
     box-sizing: border-box;
 }
 
+/* Password Gate */
+.password-gate {
+    position: fixed;
+    inset: 0;
+    background: #fafafa;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.password-gate.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.password-modal {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 48px 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.password-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 24px;
+}
+
+.password-modal h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.password-modal > p {
+    color: #6b7280;
+    font-size: 15px;
+    margin-bottom: 32px;
+}
+
+.password-input-wrapper {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.password-input-wrapper input {
+    width: 100%;
+    padding: 14px 48px 14px 16px;
+    font-size: 16px;
+    font-family: inherit;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f5f5f5;
+    color: #1a1a1a;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.password-input-wrapper input:focus {
+    border-color: #333;
+}
+
+.password-input-wrapper input::placeholder {
+    color: #9ca3af;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password svg {
+    width: 20px;
+    height: 20px;
+    color: #9ca3af;
+    transition: color 0.2s;
+}
+
+.toggle-password:hover svg {
+    color: #6b7280;
+}
+
+.password-error {
+    color: #ef4444;
+    font-size: 13px;
+    min-height: 20px;
+    margin-bottom: 16px;
+}
+
+.password-submit {
+    width: 100%;
+    padding: 14px 24px;
+}
+
 :root {
     --bg-primary: #fafafa;
     --bg-secondary: #f5f5f5;
