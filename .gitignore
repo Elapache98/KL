@@ -1,6 +1,3 @@
-# Config file with sensitive data
-config.js
-
 # OS files
 .DS_Store
 Thumbs.db
