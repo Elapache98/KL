@@ -1,3 +1,113 @@
+// ==========================================
+// PASSWORD GATE
+// ==========================================
+// Password hash and session duration are loaded from config.js (which is gitignored)
+const PASSWORD_HASH = APP_CONFIG.PASSWORD_HASH;
+const SESSION_DURATION = APP_CONFIG.SESSION_HOURS * 60 * 60 * 1000;
+const SESSION_KEY = 'klegal_session';
+
+// SHA-256 hash function using Web Crypto API
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+function checkSession() {
+    // In dev mode, always show password gate
+    if (APP_CONFIG.DEV_MODE) {
+        localStorage.removeItem(SESSION_KEY);
+        return false;
+    }
+    
+    const session = localStorage.getItem(SESSION_KEY);
+    if (session) {
+        const sessionData = JSON.parse(session);
+        const now = Date.now();
+        if (now - sessionData.timestamp < SESSION_DURATION) {
+            return true; // Session is still valid
+        }
+        // Session expired, remove it
+        localStorage.removeItem(SESSION_KEY);
+    }
+    return false;
+}
+
+function createSession() {
+    const sessionData = {
+        timestamp: Date.now()
+    };
+    localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+}
+
+function initPasswordGate() {
+    const passwordGate = document.getElementById('passwordGate');
+    const passwordForm = document.getElementById('passwordForm');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordError = document.getElementById('passwordError');
+    const togglePassword = document.getElementById('togglePassword');
+
+    // Check if session is valid
+    if (checkSession()) {
+        passwordGate.classList.add('hidden');
+        setTimeout(() => {
+            passwordGate.style.display = 'none';
+        }, 300);
+        return;
+    }
+
+    // Toggle password visibility
+    togglePassword.addEventListener('click', () => {
+        const type = passwordInput.type === 'password' ? 'text' : 'password';
+        passwordInput.type = type;
+        
+        const eyeOpen = togglePassword.querySelector('.eye-open');
+        const eyeClosed = togglePassword.querySelector('.eye-closed');
+        
+        if (type === 'text') {
+            eyeOpen.style.display = 'none';
+            eyeClosed.style.display = 'block';
+        } else {
+            eyeOpen.style.display = 'block';
+            eyeClosed.style.display = 'none';
+        }
+    });
+
+    // Handle form submit
+    passwordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const enteredPassword = passwordInput.value;
+        const enteredHash = await hashPassword(enteredPassword);
+        
+        if (enteredHash === PASSWORD_HASH) {
+            createSession();
+            passwordGate.classList.add('hidden');
+            setTimeout(() => {
+                passwordGate.style.display = 'none';
+            }, 300);
+            passwordError.textContent = '';
+        } else {
+            passwordError.textContent = 'Incorrect password. Please try again.';
+            passwordInput.value = '';
+            passwordInput.focus();
+        }
+    });
+
+    // Focus input on load
+    passwordInput.focus();
+}
+
+// Initialize password gate immediately
+document.addEventListener('DOMContentLoaded', initPasswordGate);
+
+// ==========================================
+// PDF COMBINER
+// ==========================================
+
 // Set PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
